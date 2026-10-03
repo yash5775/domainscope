@@ -847,11 +847,10 @@
   margin-bottom: 10px;
 }
 
-.toolbar-left {
+.toolbar-controls {
   display: flex;
   align-items: center;
   gap: 8px;
-  flex-wrap: wrap;
 }
 
 .filter-tabs {
@@ -986,12 +985,14 @@
   background: var(--surface-card);
   border: 1px solid var(--border-default);
   border-radius: var(--radius-lg);
-  overflow: hidden;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
   box-shadow: var(--shadow-card);
 }
 
 .domain-table {
   width: 100%;
+  min-width: 530px;
   border-collapse: collapse;
   text-align: left;
 }
@@ -1373,4 +1374,241 @@
 @keyframes slideUp {
   from { opacity: 0; transform: translateY(6px); }
   to { opacity: 1; transform: translateY(0); }
+}
+
+/* ==========================================================================
+   RESPONSIVE DESIGN SUITE (DESKTOP, TABLET, MOBILE)
+   ========================================================================== */
+
+/* Responsive Header Elements */
+.status-text-short {
+  display: none;
+}
+.copy-text-short {
+  display: none;
+}
+
+/* Touch Copy Icon Visibility */
+@media (hover: none), (max-width: 768px) {
+  .btn-row-copy {
+    opacity: 0.85 !important;
+  }
+}
+
+/* Tablet & Medium Screens (<= 1040px) */
+@media (max-width: 1040px) {
+  .main-grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+  .app-container {
+    padding: 18px 20px 60px;
+  }
+}
+
+/* Mobile Landscape & Tablet Portrait (<= 768px) */
+@media (max-width: 768px) {
+  /* Prevent iOS Safari forced auto-zoom on input focus */
+  .domain-textarea,
+  .tld-search-input,
+  .table-search-input {
+    font-size: 16px;
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+
+  .results-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+
+  .filter-tabs {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .filter-btn {
+    justify-content: center;
+    padding: 6px 4px;
+    font-size: 0.74rem;
+  }
+
+  .toolbar-controls {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .toolbar-controls .search-input-wrapper {
+    flex: 1;
+  }
+
+  .table-search-input {
+    width: 100%;
+  }
+
+  .table-search-input:focus {
+    width: 100%;
+  }
+}
+
+/* Mobile Screens (<= 640px) */
+@media (max-width: 640px) {
+  .app-container {
+    padding: 12px 10px 50px;
+  }
+
+  .glass-card {
+    padding: 14px;
+    border-radius: var(--radius-md);
+  }
+
+  .app-header {
+    padding: 10px 14px;
+    margin-bottom: 14px;
+    border-radius: var(--radius-md);
+  }
+
+  .brand-content h1 {
+    font-size: 1.05rem;
+  }
+
+  /* Modal Mobile Adaptations */
+  .modal-overlay {
+    padding: 10px;
+  }
+
+  .modal-card {
+    max-height: 90vh;
+    border-radius: var(--radius-md);
+  }
+
+  .modal-header {
+    padding: 10px 14px;
+  }
+
+  .modal-body {
+    padding: 10px 12px;
+  }
+
+  .modal-summary-bar {
+    font-size: 0.72rem;
+    gap: 6px;
+  }
+
+  .modal-raw-json {
+    font-size: 0.71rem;
+    padding: 8px 10px;
+    max-height: 50vh;
+  }
+
+  /* Toast Mobile Adaptations */
+  .toast-container {
+    bottom: 14px;
+    left: 12px;
+    right: 12px;
+    align-items: center;
+  }
+
+  .toast {
+    width: 100%;
+    max-width: 380px;
+    justify-content: center;
+    font-size: 0.75rem;
+    padding: 8px 12px;
+  }
+}
+
+/* Small Mobile Screens (<= 480px) */
+@media (max-width: 480px) {
+  .status-text-full {
+    display: none;
+  }
+  .status-text-short {
+    display: inline;
+  }
+
+  .copy-text-full {
+    display: none;
+  }
+  .copy-text-short {
+    display: inline;
+  }
+
+  .btn-secondary {
+    padding: 5px 9px;
+    font-size: 0.74rem;
+  }
+
+  .system-status {
+    padding: 4px 8px;
+    font-size: 0.72rem;
+  }
+
+  .section-label {
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .section-label-actions {
+    margin-left: 0;
+  }
+
+  .tld-search-bar {
+    flex-wrap: wrap;
+  }
+
+  .tld-search-bar .search-input-wrapper {
+    width: 100%;
+  }
+
+  .tld-add-btn {
+    width: 100%;
+    justify-content: center;
+    padding: 6px 10px;
+  }
+
+  .catalog-scroll-grid {
+    grid-template-columns: repeat(auto-fill, minmax(88px, 1fr));
+    gap: 5px;
+    padding: 6px;
+    max-height: 190px;
+  }
+
+  .primary-btn {
+    padding: 10px 14px;
+    font-size: 0.84rem;
+    height: 42px;
+  }
+
+  .btn-group-running {
+    gap: 6px;
+  }
+
+  .btn-group-running button {
+    height: 40px;
+  }
+}
+
+/* Extra Small Phones (<= 380px) */
+@media (max-width: 380px) {
+  .stat-card {
+    padding: 9px 10px;
+  }
+  .stat-title {
+    font-size: 0.62rem;
+  }
+  .stat-value {
+    font-size: 1.2rem;
+  }
+  .brand-content h1 {
+    font-size: 0.95rem;
+  }
 }

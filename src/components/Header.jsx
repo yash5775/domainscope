@@ -27,7 +27,8 @@ export default function Header({ availableCount, onCopyAvailable, hasCopied }) {
       <div className="header-actions">
         <div className="system-status" title="Google DoH + Direct Registry RDAP">
           <span className="status-dot-live"></span>
-          <span>RDAP Active</span>
+          <span className="status-text-full">RDAP Active</span>
+          <span className="status-text-short">RDAP</span>
         </div>
 
         <motion.button 
@@ -46,7 +47,8 @@ export default function Header({ availableCount, onCopyAvailable, hasCopied }) {
           ) : (
             <>
               <Copy size={13} />
-              <span>Copy Available ({availableCount})</span>
+              <span className="copy-text-full">Copy Available ({availableCount})</span>
+              <span className="copy-text-short">Copy ({availableCount})</span>
             </>
           )}
         </motion.button>

@@ -73,37 +73,37 @@ export default function ResultsTable({
 
       {/* Toolbar: Filter Tabs, Instant Search & Exports */}
       <div className="results-toolbar">
-        <div className="toolbar-left">
-          <div className="filter-tabs">
-            <motion.button
-              type="button"
-              className={`filter-btn ${activeFilter === 'all' ? 'active' : ''}`}
-              onClick={() => setActiveFilter('all')}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              All <span className="filter-count">{totalCount}</span>
-            </motion.button>
-            <motion.button
-              type="button"
-              className={`filter-btn ${activeFilter === 'available' ? 'active' : ''}`}
-              onClick={() => setActiveFilter('available')}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              Available <span className="filter-count">{availableCount}</span>
-            </motion.button>
-            <motion.button
-              type="button"
-              className={`filter-btn ${activeFilter === 'taken' ? 'active' : ''}`}
-              onClick={() => setActiveFilter('taken')}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              Registered <span className="filter-count">{takenCount}</span>
-            </motion.button>
-          </div>
+        <div className="filter-tabs">
+          <motion.button
+            type="button"
+            className={`filter-btn ${activeFilter === 'all' ? 'active' : ''}`}
+            onClick={() => setActiveFilter('all')}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+          >
+            All <span className="filter-count">{totalCount}</span>
+          </motion.button>
+          <motion.button
+            type="button"
+            className={`filter-btn ${activeFilter === 'available' ? 'active' : ''}`}
+            onClick={() => setActiveFilter('available')}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+          >
+            Available <span className="filter-count">{availableCount}</span>
+          </motion.button>
+          <motion.button
+            type="button"
+            className={`filter-btn ${activeFilter === 'taken' ? 'active' : ''}`}
+            onClick={() => setActiveFilter('taken')}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+          >
+            Registered <span className="filter-count">{takenCount}</span>
+          </motion.button>
+        </div>
 
+        <div className="toolbar-controls">
           {/* Instant Search Filter */}
           <div className="search-input-wrapper">
             <Search size={13} className="search-icon" />
@@ -124,10 +124,9 @@ export default function ResultsTable({
               </button>
             )}
           </div>
-        </div>
 
-        {/* Export Suite */}
-        <div className="export-actions">
+          {/* Export Suite */}
+          <div className="export-actions">
           <motion.button
             type="button"
             className="btn-export btn-export-csv"
@@ -155,6 +154,7 @@ export default function ResultsTable({
           </motion.button>
         </div>
       </div>
+    </div>
 
       {/* Data Table */}
       <div className="table-container">
