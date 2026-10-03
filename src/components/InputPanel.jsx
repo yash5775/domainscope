@@ -178,13 +178,14 @@ export default function InputPanel({
           className="domain-textarea"
           value={inputText}
           onChange={(e) => setInputText(e.target.value)}
-          placeholder="Enter domains or keywords (one per line)..."
           spellCheck="false"
         />
 
         <div className="textarea-footer">
           <span className="count-label">
-            {cleanLines.length} input{cleanLines.length === 1 ? '' : 's'} · {totalQueries} domain{totalQueries === 1 ? '' : 's'}
+            {cleanLines.length > 0 
+              ? `${cleanLines.length} input${cleanLines.length === 1 ? '' : 's'} · ${totalQueries} domain${totalQueries === 1 ? '' : 's'}` 
+              : ''}
           </span>
 
           <label className="upload-link" title="Import list from file">
