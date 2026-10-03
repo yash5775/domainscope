@@ -144,28 +144,6 @@
   color: var(--text-primary);
 }
 
-.preset-group {
-  display: flex;
-  gap: 4px;
-}
-
-.preset-btn {
-  color: #2563eb;
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: 0.72rem;
-  font-weight: 500;
-  font-family: inherit;
-  padding: 2px 4px;
-  border-radius: var(--radius-xs);
-  transition: all var(--transition-fast);
-}
-
-.preset-btn:hover {
-  text-decoration: underline;
-  color: #1d4ed8;
-}
 
 /* Textarea */
 .textarea-wrapper {

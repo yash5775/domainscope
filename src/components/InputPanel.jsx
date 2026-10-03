@@ -9,7 +9,7 @@ import {
   Check, 
   Layers
 } from 'lucide-react';
-import { TLD_PRICING, PRESET_LISTS, generateTargetDomains } from '../services/domainEngine';
+import { TLD_PRICING, generateTargetDomains } from '../services/domainEngine';
 
 export default function InputPanel({
   inputText,
@@ -75,24 +75,6 @@ export default function InputPanel({
         <div className="flex items-center gap-2">
           <Layers size={14} className="text-secondary" />
           <span>Domain Inputs</span>
-        </div>
-        
-        {/* Compact Presets */}
-        <div className="preset-group">
-          {Object.entries(PRESET_LISTS).map(([key, preset]) => (
-            <button
-              key={key}
-              type="button"
-              className="preset-btn"
-              onClick={() => {
-                setInputText(preset.words.join('\n'));
-                onToast(`Loaded ${preset.label}!`);
-              }}
-              title={`Load ${preset.label} samples`}
-            >
-              {preset.label}
-            </button>
-          ))}
         </div>
       </div>
 

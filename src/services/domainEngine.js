@@ -56,20 +56,6 @@ export const TLD_PRICING = {
   }
 };
 
-export const PRESET_LISTS = {
-  aiTech: {
-    label: 'AI & Data',
-    words: ['neuralflow', 'cortexgrid', 'vectormesh', 'synthetix', 'tensorpulse', 'cognispark', 'dataprisma', 'inframind']
-  },
-  cloudInfra: {
-    label: 'Cloud & Infra',
-    words: ['cloudpulse', 'kubestack', 'meshscale', 'hyperedge', 'dockernode', 'serverproxy', 'zerolatency', 'bytevault']
-  },
-  shortPunchy: {
-    label: 'Short Brandable',
-    words: ['kura', 'zeno', 'vela', 'nova', 'brio', 'axon', 'tess', 'mira']
-  }
-};
 
 export function getTldMeta(domain) {
   const match = domain.match(/(\.[a-z0-9\-]+)$/i);
