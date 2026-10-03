@@ -1,21 +1,28 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useMemo } from 'react';
 import { 
   Play, 
   Pause, 
   Square, 
   Upload, 
-  ChevronDown, 
-  ChevronUp, 
   Check, 
-  Layers
+  Layers,
+  Search,
+  Plus,
+  X,
+  Trash2,
+  RotateCcw
 } from 'lucide-react';
-import { TLD_PRICING, generateTargetDomains } from '../services/domainEngine';
+import { TLD_CATALOG, TLD_PRICING, generateTargetDomains } from '../services/domainEngine';
+
+const CATEGORIES = ['All', 'Global', 'Tech', 'Creative', 'Business', 'Country'];
 
 export default function InputPanel({
   inputText,
   setInputText,
   selectedTlds,
   setSelectedTlds,
+  customTlds = [],
+  setCustomTlds = () => {},
   concurrency,
   setConcurrency,
   isRunning,
@@ -25,8 +32,9 @@ export default function InputPanel({
   onStop,
   onToast
 }) {
-  const [showMoreTlds, setShowMoreTlds] = useState(false);
   const [isDragOver, setIsDragOver] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('All');
   const fileInputRef = useRef(null);
 
   // Clean lines count & total smart generated queries
@@ -38,6 +46,44 @@ export default function InputPanel({
   const targetDomains = generateTargetDomains(inputText, selectedTlds);
   const totalQueries = targetDomains.length;
 
+  // Unified catalog combining static catalog + user custom TLDs
+  const combinedCatalog = useMemo(() => {
+    const customList = customTlds.map(tld => ({
+      tld,
+      category: 'Custom',
+      reg: TLD_PRICING[tld]?.reg || 'Standard',
+      renew: TLD_PRICING[tld]?.renew || 'Standard',
+      termNote: 'User custom extension'
+    }));
+    return [...TLD_CATALOG, ...customList];
+  }, [customTlds]);
+
+  // Clean formatted search term for custom addition
+  const cleanQuery = searchQuery.trim().toLowerCase();
+  const candidateTld = cleanQuery 
+    ? (cleanQuery.startsWith('.') ? cleanQuery : `.${cleanQuery}`)
+    : '';
+  const isValidCandidate = /^\.[a-z0-9\-]+(\.[a-z]{2,})?$/i.test(candidateTld);
+  const candidateExists = combinedCatalog.some(
+    item => item.tld.toLowerCase() === candidateTld.toLowerCase()
+  );
+
+  // Filtered catalog based on category and search query
+  const filteredCatalog = useMemo(() => {
+    return combinedCatalog.filter(item => {
+      const matchCat = selectedCategory === 'All' 
+        ? true 
+        : item.category.toLowerCase() === selectedCategory.toLowerCase();
+      if (!matchCat) return false;
+
+      if (!cleanQuery) return true;
+      return (
+        item.tld.toLowerCase().includes(cleanQuery) ||
+        item.category.toLowerCase().includes(cleanQuery)
+      );
+    });
+  }, [combinedCatalog, selectedCategory, cleanQuery]);
+
   const toggleTld = (tld) => {
     if (selectedTlds.includes(tld)) {
       if (selectedTlds.length <= 1) {
@@ -48,6 +94,48 @@ export default function InputPanel({
     } else {
       setSelectedTlds([...selectedTlds, tld]);
     }
+  };
+
+  const handleAddCustomTld = (e) => {
+    if (e) e.preventDefault();
+    if (!candidateTld || !isValidCandidate) {
+      onToast("Please enter a valid extension format (e.g. .xyz or .me)", "error");
+      return;
+    }
+    
+    // If not in catalog, add to customTlds
+    if (!candidateExists) {
+      setCustomTlds(prev => [...prev, candidateTld]);
+    }
+
+    // Always select it
+    if (!selectedTlds.includes(candidateTld)) {
+      setSelectedTlds(prev => [...prev, candidateTld]);
+    }
+
+    onToast(`Added and selected ${candidateTld}!`, "success");
+    setSearchQuery('');
+  };
+
+  const handleDeleteCustomTld = (e, tldToDelete) => {
+    e.stopPropagation();
+    setCustomTlds(prev => prev.filter(t => t !== tldToDelete));
+    setSelectedTlds(prev => {
+      const filtered = prev.filter(t => t !== tldToDelete);
+      return filtered.length > 0 ? filtered : ['.com'];
+    });
+    onToast(`Removed custom extension ${tldToDelete}`, "info");
+  };
+
+  const handleSelectAllFiltered = () => {
+    const newSelected = Array.from(new Set([...selectedTlds, ...filteredCatalog.map(i => i.tld)]));
+    setSelectedTlds(newSelected);
+    onToast(`Selected ${filteredCatalog.length} extensions`, "info");
+  };
+
+  const handleResetDefaults = () => {
+    setSelectedTlds(['.com', '.ai']);
+    onToast("Reset to default extensions (.com, .ai)", "info");
   };
 
   const handleFileUpload = (file) => {
@@ -116,69 +204,169 @@ export default function InputPanel({
         </div>
       </div>
 
-      {/* Target Extensions Selector */}
-      <div className="tld-selector-container">
+      {/* General Purpose Searchable Extensions Catalog */}
+      <div className="tld-catalog-container">
         <div className="section-label">
-          <span>Extensions</span>
-          <span className="tld-label-hint">Registry Price</span>
-        </div>
-
-        <div className="tld-chips-grid">
-          {/* .com Chip */}
-          <div 
-            className={`tld-chip ${selectedTlds.includes('.com') ? 'active' : ''}`}
-            onClick={() => toggleTld('.com')}
-          >
-            <div className="tld-info">
-              <span className="tld-name">.com</span>
-              <span className="tld-price">{TLD_PRICING['.com'].reg}</span>
-            </div>
-            <div className="tld-check-icon">
-              {selectedTlds.includes('.com') && <Check size={11} strokeWidth={3} />}
-            </div>
+          <div className="flex items-center gap-2">
+            <span>Extensions</span>
+            <span className="active-badge">{selectedTlds.length} active</span>
           </div>
-
-          {/* .ai Chip */}
-          <div 
-            className={`tld-chip ${selectedTlds.includes('.ai') ? 'active' : ''}`}
-            onClick={() => toggleTld('.ai')}
-          >
-            <div className="tld-info">
-              <span className="tld-name">.ai</span>
-              <span className="tld-price">{TLD_PRICING['.ai'].reg}</span>
-            </div>
-            <div className="tld-check-icon">
-              {selectedTlds.includes('.ai') && <Check size={11} strokeWidth={3} />}
-            </div>
+          <div className="section-label-actions">
+            <button 
+              type="button" 
+              className="link-action-btn"
+              onClick={handleSelectAllFiltered}
+              title="Select all visible extensions"
+            >
+              Select All
+            </button>
+            <span className="divider-dot">·</span>
+            <button 
+              type="button" 
+              className="link-action-btn"
+              onClick={handleResetDefaults}
+              title="Reset to .com & .ai"
+            >
+              <RotateCcw size={10} />
+              Reset
+            </button>
           </div>
         </div>
 
-        {/* Expandable Extra Extensions */}
-        <div className="more-tlds-section">
-          <div 
-            className="more-tlds-header"
-            onClick={() => setShowMoreTlds(!showMoreTlds)}
-          >
-            <span>+ Add extensions (.io, .co, .net, .org, .dev, .in)</span>
-            {showMoreTlds ? <ChevronUp size={13} /> : <ChevronDown size={13} />}
+        {/* Selected TLDs Summary Chips */}
+        <div className="active-tld-pills">
+          {selectedTlds.map(tld => {
+            const price = TLD_PRICING[tld]?.reg || '';
+            return (
+              <span key={tld} className="active-tld-pill">
+                <span className="pill-name">{tld}</span>
+                {price && <span className="pill-price">{price}</span>}
+                <button
+                  type="button"
+                  className="pill-remove-btn"
+                  onClick={() => toggleTld(tld)}
+                  title={`Remove ${tld}`}
+                >
+                  <X size={10} />
+                </button>
+              </span>
+            );
+          })}
+        </div>
+
+        {/* Search & Custom Input Bar */}
+        <form onSubmit={handleAddCustomTld} className="tld-search-bar">
+          <div className="search-input-wrapper">
+            <Search size={12} className="search-icon" />
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search 40+ TLDs or type custom (.me, .store)..."
+              className="tld-search-input"
+            />
+            {searchQuery && (
+              <button 
+                type="button" 
+                className="search-clear-btn" 
+                onClick={() => setSearchQuery('')}
+              >
+                <X size={11} />
+              </button>
+            )}
           </div>
 
-          {showMoreTlds && (
-            <div className="extra-chips">
-              {['.io', '.co', '.net', '.org', '.dev', '.app', '.in'].map((tld) => {
-                const isChecked = selectedTlds.includes(tld);
-                const price = TLD_PRICING[tld]?.reg || '';
-                return (
-                  <button
-                    key={tld}
-                    type="button"
-                    className={`mini-tld-chip ${isChecked ? 'active' : ''}`}
-                    onClick={() => toggleTld(tld)}
-                  >
-                    {tld} ({price})
-                  </button>
-                );
-              })}
+          {/* Quick-add button if candidate is typed */}
+          {candidateTld && isValidCandidate && (
+            <button 
+              type="submit" 
+              className="tld-add-btn"
+              title={`Add ${candidateTld} to extensions`}
+            >
+              <Plus size={11} strokeWidth={2.5} />
+              <span>Add {candidateTld}</span>
+            </button>
+          )}
+        </form>
+
+        {/* Category Filters */}
+        <div className="category-pills-row">
+          {CATEGORIES.map(cat => {
+            const count = cat === 'All' 
+              ? combinedCatalog.length 
+              : combinedCatalog.filter(i => i.category.toLowerCase() === cat.toLowerCase()).length;
+            return (
+              <button
+                key={cat}
+                type="button"
+                className={`cat-pill ${selectedCategory === cat ? 'active' : ''}`}
+                onClick={() => setSelectedCategory(cat)}
+              >
+                {cat} <span className="cat-count">{count}</span>
+              </button>
+            );
+          })}
+          {customTlds.length > 0 && (
+            <button
+              type="button"
+              className={`cat-pill ${selectedCategory === 'Custom' ? 'active' : ''}`}
+              onClick={() => setSelectedCategory('Custom')}
+            >
+              Custom <span className="cat-count">{customTlds.length}</span>
+            </button>
+          )}
+        </div>
+
+        {/* Scrollable Catalog Grid */}
+        <div className="catalog-scroll-grid">
+          {filteredCatalog.map(item => {
+            const isSelected = selectedTlds.includes(item.tld);
+            const isCustom = item.category === 'Custom';
+            return (
+              <div
+                key={item.tld}
+                className={`catalog-tld-card ${isSelected ? 'selected' : ''}`}
+                onClick={() => toggleTld(item.tld)}
+                title={`${item.tld} — ${item.category} (${item.termNote})`}
+              >
+                <div className="card-top-row">
+                  <span className="card-tld-name">{item.tld}</span>
+                  <div className="card-right-action">
+                    {isCustom ? (
+                      <button
+                        type="button"
+                        className="custom-tld-del-btn"
+                        onClick={(e) => handleDeleteCustomTld(e, item.tld)}
+                        title="Delete custom TLD"
+                      >
+                        <Trash2 size={10} />
+                      </button>
+                    ) : (
+                      <div className={`selection-indicator ${isSelected ? 'checked' : ''}`}>
+                        {isSelected && <Check size={10} strokeWidth={3} />}
+                      </div>
+                    )}
+                  </div>
+                </div>
+                <div className="card-price-row">
+                  <span className="card-price">{item.reg}</span>
+                  <span className="card-cat-tag">{item.category}</span>
+                </div>
+              </div>
+            );
+          })}
+          {filteredCatalog.length === 0 && (
+            <div className="empty-catalog-message">
+              <span>No extensions matching "{searchQuery}"</span>
+              {candidateTld && isValidCandidate && (
+                <button
+                  type="button"
+                  className="empty-add-btn"
+                  onClick={handleAddCustomTld}
+                >
+                  <Plus size={12} /> Add "{candidateTld}"
+                </button>
+              )}
             </div>
           )}
         </div>

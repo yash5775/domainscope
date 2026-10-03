@@ -19,7 +19,36 @@ export default function App() {
   const [inputText, setInputText] = useState(
     'neuralflow\ncloudpulse\nquantumspark\nhyperlaunch\nbytevault\ninframind'
   );
-  const [selectedTlds, setSelectedTlds] = useState(['.com', '.ai']);
+  const [selectedTlds, setSelectedTlds] = useState(() => {
+    try {
+      const saved = localStorage.getItem('domainscope_selected_tlds');
+      return saved ? JSON.parse(saved) : ['.com', '.ai'];
+    } catch (e) {
+      return ['.com', '.ai'];
+    }
+  });
+
+  const [customTlds, setCustomTlds] = useState(() => {
+    try {
+      const saved = localStorage.getItem('domainscope_custom_tlds');
+      return saved ? JSON.parse(saved) : [];
+    } catch (e) {
+      return [];
+    }
+  });
+
+  useEffect(() => {
+    try {
+      localStorage.setItem('domainscope_selected_tlds', JSON.stringify(selectedTlds));
+    } catch (e) {}
+  }, [selectedTlds]);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem('domainscope_custom_tlds', JSON.stringify(customTlds));
+    } catch (e) {}
+  }, [customTlds]);
+
   const [concurrency, setConcurrency] = useState(5);
 
   // Runner state
@@ -242,6 +271,8 @@ export default function App() {
           setInputText={setInputText}
           selectedTlds={selectedTlds}
           setSelectedTlds={setSelectedTlds}
+          customTlds={customTlds}
+          setCustomTlds={setCustomTlds}
           concurrency={concurrency}
           setConcurrency={setConcurrency}
           isRunning={isRunning}

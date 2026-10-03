@@ -1,60 +1,77 @@
-// --- Data & Pricing Configuration ---
-export const TLD_PRICING = {
-  '.com': {
-    reg: '$12.98/yr',
-    renew: '$15.98/yr',
-    termNote: '1 yr min',
+// --- Data & Pricing Configuration (48+ Global TLDs categorized) ---
+export const TLD_CATALOG = [
+  // Global & Core
+  { tld: '.com', category: 'Global', reg: '$12.98/yr', renew: '$15.98/yr', termNote: '1 yr min' },
+  { tld: '.co', category: 'Global', reg: '$11.98/yr', renew: '$29.98/yr', termNote: '1 yr promo' },
+  { tld: '.net', category: 'Global', reg: '$13.98/yr', renew: '$16.98/yr', termNote: '1 yr min' },
+  { tld: '.org', category: 'Global', reg: '$12.98/yr', renew: '$15.98/yr', termNote: '1 yr min' },
+  { tld: '.biz', category: 'Global', reg: '$14.98/yr', renew: '$18.98/yr', termNote: '1 yr min' },
+  { tld: '.info', category: 'Global', reg: '$4.98/yr', renew: '$21.98/yr', termNote: '1 yr promo' },
+
+  // Tech & Developer
+  { tld: '.ai', category: 'Tech', reg: '$83.98/yr', renew: '$91.98/yr', termNote: '2 yr min registry rule (~$168 upfront)' },
+  { tld: '.io', category: 'Tech', reg: '$39.98/yr', renew: '$49.98/yr', termNote: '1 yr min' },
+  { tld: '.dev', category: 'Tech', reg: '$14.98/yr', renew: '$17.98/yr', termNote: 'Requires HTTPS setup' },
+  { tld: '.app', category: 'Tech', reg: '$15.98/yr', renew: '$18.98/yr', termNote: 'Requires HTTPS setup' },
+  { tld: '.tech', category: 'Tech', reg: '$4.98/yr', renew: '$49.98/yr', termNote: '1 yr promo' },
+  { tld: '.cloud', category: 'Tech', reg: '$9.98/yr', renew: '$21.98/yr', termNote: '1 yr min' },
+  { tld: '.software', category: 'Tech', reg: '$24.98/yr', renew: '$34.98/yr', termNote: '1 yr min' },
+  { tld: '.digital', category: 'Tech', reg: '$6.98/yr', renew: '$36.98/yr', termNote: '1 yr promo' },
+  { tld: '.sh', category: 'Tech', reg: '$34.98/yr', renew: '$39.98/yr', termNote: '1 yr min' },
+  { tld: '.so', category: 'Tech', reg: '$24.98/yr', renew: '$29.98/yr', termNote: '1 yr min' },
+  { tld: '.bot', category: 'Tech', reg: '$59.98/yr', renew: '$69.98/yr', termNote: '1 yr min' },
+  { tld: '.code', category: 'Tech', reg: '$14.98/yr', renew: '$29.98/yr', termNote: '1 yr min' },
+
+  // Creative & Modern
+  { tld: '.xyz', category: 'Creative', reg: '$1.99/yr', renew: '$14.98/yr', termNote: 'Top general modern TLD' },
+  { tld: '.me', category: 'Creative', reg: '$7.98/yr', renew: '$19.98/yr', termNote: 'Personal & portfolio' },
+  { tld: '.design', category: 'Creative', reg: '$8.98/yr', renew: '$48.98/yr', termNote: 'Design studios & agency' },
+  { tld: '.studio', category: 'Creative', reg: '$21.98/yr', renew: '$29.98/yr', termNote: 'Creative studio' },
+  { tld: '.space', category: 'Creative', reg: '$2.98/yr', renew: '$25.98/yr', termNote: '1 yr promo' },
+  { tld: '.site', category: 'Creative', reg: '$2.48/yr', renew: '$29.98/yr', termNote: '1 yr promo' },
+  { tld: '.online', category: 'Creative', reg: '$2.98/yr', renew: '$36.98/yr', termNote: '1 yr promo' },
+  { tld: '.world', category: 'Creative', reg: '$4.98/yr', renew: '$32.98/yr', termNote: 'Community & global' },
+  { tld: '.pro', category: 'Creative', reg: '$3.98/yr', renew: '$19.98/yr', termNote: 'Professional portfolio' },
+  { tld: '.link', category: 'Creative', reg: '$5.98/yr', renew: '$14.98/yr', termNote: 'Bio links & redirects' },
+  { tld: '.live', category: 'Creative', reg: '$3.98/yr', renew: '$27.98/yr', termNote: 'Streaming & events' },
+  { tld: '.art', category: 'Creative', reg: '$4.98/yr', renew: '$19.98/yr', termNote: 'Art & gallery' },
+
+  // Business & Commerce
+  { tld: '.store', category: 'Business', reg: '$2.98/yr', renew: '$49.98/yr', termNote: 'E-commerce & retail' },
+  { tld: '.shop', category: 'Business', reg: '$2.98/yr', renew: '$38.98/yr', termNote: 'Online store' },
+  { tld: '.agency', category: 'Business', reg: '$6.98/yr', renew: '$24.98/yr', termNote: 'Client service' },
+  { tld: '.company', category: 'Business', reg: '$10.98/yr', renew: '$16.98/yr', termNote: 'Corporate entities' },
+  { tld: '.ltd', category: 'Business', reg: '$8.98/yr', renew: '$28.98/yr', termNote: 'Limited companies' },
+  { tld: '.services', category: 'Business', reg: '$18.98/yr', renew: '$34.98/yr', termNote: 'B2B & B2C' },
+  { tld: '.solutions', category: 'Business', reg: '$12.98/yr', renew: '$24.98/yr', termNote: 'Enterprise consulting' },
+  { tld: '.finance', category: 'Business', reg: '$49.98/yr', renew: '$59.98/yr', termNote: 'Fintech & advisory' },
+  { tld: '.capital', category: 'Business', reg: '$49.98/yr', renew: '$59.98/yr', termNote: 'Investment & VC' },
+
+  // Country & Regional (ccTLDs)
+  { tld: '.in', category: 'Country', reg: '$8.98/yr', renew: '$11.98/yr', termNote: 'India registry' },
+  { tld: '.co.in', category: 'Country', reg: '$6.98/yr', renew: '$9.98/yr', termNote: 'India commercial' },
+  { tld: '.co.uk', category: 'Country', reg: '$8.48/yr', renew: '$10.48/yr', termNote: 'UK commercial' },
+  { tld: '.uk', category: 'Country', reg: '$8.48/yr', renew: '$10.48/yr', termNote: 'United Kingdom' },
+  { tld: '.ca', category: 'Country', reg: '$12.98/yr', renew: '$15.98/yr', termNote: 'Canada' },
+  { tld: '.de', category: 'Country', reg: '$8.98/yr', renew: '$12.98/yr', termNote: 'Germany' },
+  { tld: '.eu', category: 'Country', reg: '$7.98/yr', renew: '$12.98/yr', termNote: 'European Union' },
+  { tld: '.us', category: 'Country', reg: '$9.98/yr', renew: '$12.98/yr', termNote: 'United States' },
+  { tld: '.ch', category: 'Country', reg: '$15.98/yr', renew: '$19.98/yr', termNote: 'Switzerland' },
+  { tld: '.nl', category: 'Country', reg: '$9.98/yr', renew: '$14.98/yr', termNote: 'Netherlands' },
+  { tld: '.fr', category: 'Country', reg: '$11.98/yr', renew: '$16.98/yr', termNote: 'France' },
+  { tld: '.au', category: 'Country', reg: '$14.98/yr', renew: '$18.98/yr', termNote: 'Australia' }
+];
+
+export const TLD_PRICING = TLD_CATALOG.reduce((acc, item) => {
+  acc[item.tld] = {
+    reg: item.reg,
+    renew: item.renew,
+    termNote: item.termNote,
+    category: item.category,
     buyUrl: (d) => `https://www.namecheap.com/domains/registration/results/?domain=${encodeURIComponent(d)}`
-  },
-  '.ai': {
-    reg: '$83.98/yr',
-    renew: '$91.98/yr',
-    termNote: '2 yr min registry rule (~$168 upfront)',
-    buyUrl: (d) => `https://www.namecheap.com/domains/registration/results/?domain=${encodeURIComponent(d)}`
-  },
-  '.io': {
-    reg: '$39.98/yr',
-    renew: '$49.98/yr',
-    termNote: '1 yr min',
-    buyUrl: (d) => `https://www.namecheap.com/domains/registration/results/?domain=${encodeURIComponent(d)}`
-  },
-  '.co': {
-    reg: '$11.98/yr',
-    renew: '$29.98/yr',
-    termNote: '1 yr promo',
-    buyUrl: (d) => `https://www.namecheap.com/domains/registration/results/?domain=${encodeURIComponent(d)}`
-  },
-  '.net': {
-    reg: '$13.98/yr',
-    renew: '$16.98/yr',
-    termNote: '1 yr min',
-    buyUrl: (d) => `https://www.namecheap.com/domains/registration/results/?domain=${encodeURIComponent(d)}`
-  },
-  '.org': {
-    reg: '$12.98/yr',
-    renew: '$15.98/yr',
-    termNote: '1 yr min',
-    buyUrl: (d) => `https://www.namecheap.com/domains/registration/results/?domain=${encodeURIComponent(d)}`
-  },
-  '.dev': {
-    reg: '$14.98/yr',
-    renew: '$17.98/yr',
-    termNote: 'Requires HTTPS setup',
-    buyUrl: (d) => `https://www.namecheap.com/domains/registration/results/?domain=${encodeURIComponent(d)}`
-  },
-  '.app': {
-    reg: '$15.98/yr',
-    renew: '$18.98/yr',
-    termNote: 'Requires HTTPS setup',
-    buyUrl: (d) => `https://www.namecheap.com/domains/registration/results/?domain=${encodeURIComponent(d)}`
-  },
-  '.in': {
-    reg: '$8.98/yr',
-    renew: '$11.98/yr',
-    termNote: '1 yr min',
-    buyUrl: (d) => `https://www.namecheap.com/domains/registration/results/?domain=${encodeURIComponent(d)}`
-  }
-};
+  };
+  return acc;
+}, {});
 
 
 export function getTldMeta(domain) {
@@ -126,6 +143,12 @@ export function getDirectRdapUrl(domain) {
   if (tld === '.net') return `https://rdap.verisign.com/net/v1/domain/${encodeURIComponent(domain)}`;
   if (tld === '.ai' || tld === '.io' || tld === '.co') {
     return `https://rdap.identitydigital.services/rdap/domain/${encodeURIComponent(domain)}`;
+  }
+  if (tld === '.org') {
+    return `https://rdap.publicinterestregistry.org/rdap/domain/${encodeURIComponent(domain)}`;
+  }
+  if (tld === '.dev' || tld === '.app') {
+    return `https://rdap.nic.google/domain/${encodeURIComponent(domain)}`;
   }
   return `https://rdap.org/domain/${encodeURIComponent(domain)}`;
 }
