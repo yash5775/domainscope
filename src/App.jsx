@@ -17,9 +17,7 @@ import {
 import './App.css';
 
 export default function App() {
-  const [inputText, setInputText] = useState(
-    'neuralflow\ncloudpulse\nquantumspark\nhyperlaunch\nbytevault\ninframind'
-  );
+  const [inputText, setInputText] = useState('');
   const [selectedTlds, setSelectedTlds] = useState(() => {
     try {
       const saved = localStorage.getItem('domainscope_selected_tlds');

@@ -178,7 +178,7 @@ export default function InputPanel({
           className="domain-textarea"
           value={inputText}
           onChange={(e) => setInputText(e.target.value)}
-          placeholder="Enter brand keywords (e.g. cloudpulse) or exact domains (e.g. stripe.com)..."
+          placeholder="Enter domains or keywords (one per line)..."
           spellCheck="false"
         />
 
