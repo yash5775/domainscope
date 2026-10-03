@@ -208,29 +208,33 @@ export default function InputPanel({
       {/* General Purpose Searchable Extensions Catalog */}
       <div className="tld-catalog-container">
         <div className="section-label">
-          <div className="flex items-center gap-2">
-            <span>Extensions</span>
+          <div className="section-label-left">
+            <span className="section-label-title">Extensions</span>
             <span className="active-badge">{selectedTlds.length} active</span>
           </div>
           <div className="section-label-actions">
-            <button 
+            <motion.button 
+              type="button" 
+              className="link-action-btn"
+              onClick={handleResetDefaults}
+              title="Reset to default extensions (.com, .ai)"
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.96 }}
+            >
+              <RotateCcw size={10} />
+              <span>Reset</span>
+            </motion.button>
+            <motion.button 
               type="button" 
               className="link-action-btn"
               onClick={handleSelectAllFiltered}
               title="Select all visible extensions"
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.96 }}
             >
-              Select All
-            </button>
-            <span className="divider-dot">·</span>
-            <button 
-              type="button" 
-              className="link-action-btn"
-              onClick={handleResetDefaults}
-              title="Reset to .com & .ai"
-            >
-              <RotateCcw size={10} />
-              Reset
-            </button>
+              <Check size={10} strokeWidth={2.5} />
+              <span>Select All</span>
+            </motion.button>
           </div>
         </div>
 
