@@ -488,7 +488,6 @@
 .catalog-tld-card:hover {
   border-color: var(--border-strong);
   background: #ffffff;
-  transform: translateY(-1px);
 }
 
 .catalog-tld-card.selected {
@@ -722,7 +721,6 @@
 
 .stat-card:hover {
   border-color: var(--border-strong);
-  transform: translateY(-1px);
 }
 
 .stat-card.active-filter-card {

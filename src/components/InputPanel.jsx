@@ -351,8 +351,6 @@ export default function InputPanel({
                 className={`catalog-tld-card ${isSelected ? 'selected' : ''}`}
                 onClick={() => toggleTld(item.tld)}
                 title={`${item.tld} — ${item.category} (${item.termNote})`}
-                whileHover={{ y: -2, transition: { duration: 0.12 } }}
-                whileTap={{ scale: 0.97 }}
                 layout
               >
                 <div className="card-top-row">
