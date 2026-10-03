@@ -1,37 +1,85 @@
 /* ==========================================================================
-   DESIGN SYSTEM: HUMAN-CRAFTED EDITORIAL LIGHT MODE
-   Swiss / Scandinavian Minimalist Precision • Pure White & Stone
-   Zero AI Slop • Zero Glowing Gradients • Solid Ink Accents
+   DESIGN SYSTEM: GOLDEN RATIO (φ ≈ 1.6180339887...)
+   Mathematical Harmony • Fibonacci Scaling • Swiss Precision Craft
+   Ratio (φ): 1.618 | Golden Section: 61.8% / 38.2% / 23.6% / 14.6%
    ========================================================================== */
 :root {
-  /* Surface & Canvas Hierarchy */
-  --canvas-bg: #f8f9fa;
+  /* --------------------------------------------------------------------------
+     1. THE GOLDEN SPACING SYSTEM (Fibonacci Geometric Progression)
+     Each step = prior step × φ (approximated to whole integer pixels)
+     -------------------------------------------------------------------------- */
+  --phi-space-4xs: 2px;    /* 1.2 × 1.618 */
+  --phi-space-3xs: 3px;    /* 2 × 1.618 ≈ 3.2 */
+  --phi-space-2xs: 5px;    /* 3 × 1.618 ≈ 4.8 */
+  --phi-space-xs: 8px;     /* 5 × 1.618 ≈ 8.1 */
+  --phi-space-sm: 13px;    /* 8 × 1.618 ≈ 12.9 */
+  --phi-space-md: 21px;    /* 13 × 1.618 ≈ 21.0 */
+  --phi-space-lg: 34px;    /* 21 × 1.618 ≈ 34.0 */
+  --phi-space-xl: 55px;    /* 34 × 1.618 ≈ 55.0 */
+  --phi-space-2xl: 89px;   /* 55 × 1.618 ≈ 89.0 */
+  --phi-space-3xl: 144px;  /* 89 × 1.618 ≈ 144.0 */
+  --phi-space-4xl: 233px;  /* 144 × 1.618 ≈ 233.0 */
+
+  /* Legacy alias mapping for backward compatibility */
+  --space-2xs: var(--phi-space-2xs);
+  --space-xs: var(--phi-space-xs);
+  --space-sm: var(--phi-space-sm);
+  --space-md: var(--phi-space-md);
+  --space-lg: var(--phi-space-lg);
+  --space-xl: var(--phi-space-xl);
+
+  /* --------------------------------------------------------------------------
+     2. GOLDEN TYPOGRAPHY MODULAR SCALE (Base: 13.5px, Ratio: φ ≈ 1.618 & √φ ≈ 1.272)
+     -------------------------------------------------------------------------- */
+  --font-micro: 9px;       /* Base / 1.618 */
+  --font-caption: 11px;    /* Base / 1.272 */
+  --font-small: 13px;      /* Fibonacci 13px */
+  --font-base: 13.5px;     /* Standard Swiss Base */
+  --font-ui-lead: 16px;    /* 13 × 1.272 */
+  --font-h4: 18px;         /* Base × 1.272 (√φ) */
+  --font-h3: 22px;         /* Base × 1.618 (φ) */
+  --font-h2: 29px;         /* 22.6 × 1.272 */
+  --font-h1: 37px;         /* Base × 1.618² */
+
+  /* Golden Ratio Line Heights */
+  --line-height-golden: 1.618;  /* Optimal reading rhythm */
+  --line-height-heading: 1.272; /* Minor golden ratio √φ */
+  --line-height-compact: 1.16;
+
+  /* --------------------------------------------------------------------------
+     3. COLOR HARMONY: GOLDEN DIVISION (61.8% Canvas - 23.6% Structure - 14.6% Focal)
+     Harmonic hue distribution using Golden Angle (137.5°)
+     -------------------------------------------------------------------------- */
+  /* 61.8% Dominant Canvas Ground */
+  --canvas-bg: #f8fafc;
   --surface-card: #ffffff;
-  --surface-card-hover: #fafafa;
+  --surface-card-hover: #fcfdfe;
   --surface-subtle: #f1f5f9;
   --surface-input: #ffffff;
   --surface-table-head: #f8fafc;
   --surface-modal: #ffffff;
 
-  /* Border Hierarchy */
+  /* 23.6% Structural Architecture (Borders, Frames, High-Legibility Inks) */
   --border-subtle: #f1f5f9;
   --border-default: #e2e8f0;
   --border-strong: #cbd5e1;
   --border-focus: #0f172a;
 
-  /* Typography Ink Hierarchy */
   --text-primary: #0f172a;
   --text-secondary: #475569;
   --text-tertiary: #64748b;
   --text-muted: #94a3b8;
 
-  /* Solid Ink Brand Actions */
+  /* Primary Solid Ink Actions */
   --btn-primary-bg: #0f172a;
   --btn-primary-hover: #1e293b;
   --btn-primary-active: #020617;
   --btn-primary-text: #ffffff;
 
-  /* Semantic Status Tokens (Calm, Desaturated, Non-Neon) */
+  /* 14.6% Focal Accents (Natural Golden Angle Hues: Blue 221°, Emerald 142°, Amber 38°) */
+  --accent-focal: #2563eb;
+  --accent-focal-hover: #1d4ed8;
+
   --status-available-bg: #f0fdf4;
   --status-available-border: #bbf7d0;
   --status-available-text: #15803d;
@@ -44,24 +92,30 @@
   --status-warn-border: #fde68a;
   --status-warn-text: #b45309;
 
-  /* Radii Tokens */
-  --radius-xs: 4px;
-  --radius-sm: 6px;
+  /* --------------------------------------------------------------------------
+     4. FIBONACCI RADII SCALE
+     -------------------------------------------------------------------------- */
+  --radius-2xs: 2px;
+  --radius-xs: 3px;
+  --radius-sm: 5px;
   --radius-md: 8px;
-  --radius-lg: 10px;
+  --radius-lg: 13px;
+  --radius-xl: 21px;
   --radius-full: 9999px;
 
-  /* Elevation Shadows */
-  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.04);
-  --shadow-card: 0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px -1px rgba(0, 0, 0, 0.03);
-  --shadow-modal: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+  /* --------------------------------------------------------------------------
+     5. ELEVATION SHADOWS (Golden Section falloff)
+     -------------------------------------------------------------------------- */
+  --shadow-sm: 0 1px 2px 0 rgba(15, 23, 42, 0.04);
+  --shadow-card: 0 1px 3px 0 rgba(15, 23, 42, 0.05), 0 1px 2px -1px rgba(15, 23, 42, 0.03);
+  --shadow-modal: 0 13px 34px -8px rgba(15, 23, 42, 0.12), 0 8px 13px -5px rgba(15, 23, 42, 0.06);
 
   /* Transitions */
   --transition-fast: 0.14s ease;
-  --transition-normal: 0.2s ease;
+  --transition-normal: 0.21s ease;
 }
 
-/* Reset & Base */
+/* Base Reset & Golden Typography */
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
@@ -73,10 +127,20 @@ body {
   color: var(--text-primary);
   font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   min-height: 100vh;
-  line-height: 1.5;
-  font-size: 13.5px;
+  line-height: var(--line-height-golden);
+  font-size: var(--font-base);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Headings with Golden Ratio Balanced Typography */
+h1, h2, h3, h4 {
+  line-height: var(--line-height-heading);
+  text-wrap: balance;
+}
+
+p, .pretty-text {
+  text-wrap: pretty;
 }
 
 /* Accessible Focus Rings */
@@ -85,17 +149,17 @@ body {
   outline-offset: 2px;
 }
 
-/* App Container */
+/* App Container (Fibonacci Max Width & Spacing: 1440px / 34px / 89px) */
 .app-container {
-  max-width: 1400px;
+  max-width: 1440px;
   margin: 0 auto;
-  padding: 24px 32px 80px;
+  padding: var(--phi-space-lg) var(--phi-space-lg) var(--phi-space-2xl);
 }
 
-/* Scrollbar Styling */
+/* Scrollbar Styling (Fibonacci 5px) */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: var(--phi-space-2xs);
+  height: var(--phi-space-2xs);
 }
 ::-webkit-scrollbar-track {
   background: var(--surface-subtle);

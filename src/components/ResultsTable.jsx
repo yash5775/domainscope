@@ -161,10 +161,10 @@ export default function ResultsTable({
         <table className="domain-table">
           <thead>
             <tr>
-              <th style={{ width: '38%' }}>Domain</th>
-              <th style={{ width: '18%' }}>Status</th>
-              <th style={{ width: '22%' }}>Price</th>
-              <th style={{ width: '22%', textAlign: 'right' }}>Action</th>
+              <th style={{ width: '38.2%' }}>Domain</th>
+              <th style={{ width: '23.6%' }}>Status</th>
+              <th style={{ width: '23.6%' }}>Price</th>
+              <th style={{ width: '14.6%', textAlign: 'right' }}>Action</th>
             </tr>
           </thead>
           <tbody>
