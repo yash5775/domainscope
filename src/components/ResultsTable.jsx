@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Search, 
   Download, 
@@ -60,10 +61,12 @@ export default function ResultsTable({
             <span className="progress-percentage">{progress.percent}%</span>
           </div>
           <div className="progress-track">
-            <div 
+            <motion.div 
               className="progress-fill" 
-              style={{ width: `${progress.percent}%` }}
-            ></div>
+              initial={{ width: 0 }}
+              animate={{ width: `${progress.percent}%` }}
+              transition={{ duration: 0.3, ease: "easeOut" }}
+            />
           </div>
         </div>
       )}
@@ -72,27 +75,33 @@ export default function ResultsTable({
       <div className="results-toolbar">
         <div className="toolbar-left">
           <div className="filter-tabs">
-            <button
+            <motion.button
               type="button"
               className={`filter-btn ${activeFilter === 'all' ? 'active' : ''}`}
               onClick={() => setActiveFilter('all')}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
             >
               All <span className="filter-count">{totalCount}</span>
-            </button>
-            <button
+            </motion.button>
+            <motion.button
               type="button"
               className={`filter-btn ${activeFilter === 'available' ? 'active' : ''}`}
               onClick={() => setActiveFilter('available')}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
             >
               Available <span className="filter-count">{availableCount}</span>
-            </button>
-            <button
+            </motion.button>
+            <motion.button
               type="button"
               className={`filter-btn ${activeFilter === 'taken' ? 'active' : ''}`}
               onClick={() => setActiveFilter('taken')}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
             >
               Registered <span className="filter-count">{takenCount}</span>
-            </button>
+            </motion.button>
           </div>
 
           {/* Instant Search Filter */}
@@ -119,27 +128,31 @@ export default function ResultsTable({
 
         {/* Export Suite */}
         <div className="export-actions">
-          <button
+          <motion.button
             type="button"
             className="btn-export btn-export-csv"
             disabled={results.length === 0}
             onClick={onExportCsv}
             title="Export CSV"
+            whileHover={results.length > 0 ? { scale: 1.02 } : {}}
+            whileTap={results.length > 0 ? { scale: 0.97 } : {}}
           >
             <Download size={12} />
             <span>CSV</span>
-          </button>
+          </motion.button>
 
-          <button
+          <motion.button
             type="button"
             className="btn-export btn-export-pdf"
             disabled={results.length === 0}
             onClick={onExportPdf}
             title="Export PDF"
+            whileHover={results.length > 0 ? { scale: 1.02 } : {}}
+            whileTap={results.length > 0 ? { scale: 0.97 } : {}}
           >
             <FileText size={12} />
             <span>PDF</span>
-          </button>
+          </motion.button>
         </div>
       </div>
 
@@ -163,7 +176,12 @@ export default function ResultsTable({
                 const isCopied = copiedDomain === record.domain;
 
                 return (
-                  <tr key={record.domain}>
+                  <motion.tr 
+                    key={record.domain}
+                    initial={{ opacity: 0, y: 6 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.18, ease: "easeOut" }}
+                  >
                     {/* Domain Cell */}
                     <td>
                       <div className="domain-cell">
@@ -172,18 +190,20 @@ export default function ResultsTable({
                           <span className="domain-tld-highlight">{domainTldPart}</span>
                         </span>
                         
-                        <button
+                        <motion.button
                           type="button"
                           className="btn-row-copy"
                           onClick={() => handleCopy(record.domain)}
                           title="Copy to clipboard"
+                          whileHover={{ scale: 1.15 }}
+                          whileTap={{ scale: 0.9 }}
                         >
                           {isCopied ? (
                             <Check size={12} className="text-emerald" />
                           ) : (
                             <Copy size={12} />
                           )}
-                        </button>
+                        </motion.button>
                       </div>
                     </td>
 
@@ -225,30 +245,34 @@ export default function ResultsTable({
                     <td style={{ textAlign: 'right' }}>
                       <div className="action-links">
                         {record.status === 'available' && (
-                          <a
+                          <motion.a
                             href={record.buyUrl}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="btn-buy"
                             title="Register domain"
+                            whileHover={{ scale: 1.04 }}
+                            whileTap={{ scale: 0.96 }}
                           >
                             <span>Register</span>
                             <ExternalLink size={10} strokeWidth={2.5} />
-                          </a>
+                          </motion.a>
                         )}
 
-                        <button
+                        <motion.button
                           type="button"
                           className="btn-inspect"
                           onClick={() => onInspect(record)}
                           title="View RDAP response"
+                          whileHover={{ scale: 1.03 }}
+                          whileTap={{ scale: 0.96 }}
                         >
                           <Code2 size={11} />
                           <span>Inspect</span>
-                        </button>
+                        </motion.button>
                       </div>
                     </td>
-                  </tr>
+                  </motion.tr>
                 );
               })
             ) : (

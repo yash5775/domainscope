@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { motion } from 'framer-motion';
 import { X, Copy, Check, Terminal } from 'lucide-react';
 
 export default function InspectModal({ record, onClose, onToast }) {
@@ -29,16 +30,35 @@ export default function InspectModal({ record, onClose, onToast }) {
   };
 
   return (
-    <div className="modal-overlay open" onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}>
-      <div className="modal-card">
+    <motion.div 
+      className="modal-overlay open" 
+      onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.2 }}
+    >
+      <motion.div 
+        className="modal-card"
+        initial={{ opacity: 0, scale: 0.94, y: 16 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        exit={{ opacity: 0, scale: 0.94, y: 16 }}
+        transition={{ type: "spring", stiffness: 350, damping: 28 }}
+      >
         <div className="modal-header">
           <div className="flex items-center gap-2">
             <Terminal size={16} className="text-secondary" />
             <h3 className="modal-title">Registry RDAP: {record.domain}</h3>
           </div>
-          <button className="modal-close" onClick={onClose} aria-label="Close modal">
+          <motion.button 
+            className="modal-close" 
+            onClick={onClose} 
+            aria-label="Close modal"
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+          >
             <X size={16} />
-          </button>
+          </motion.button>
         </div>
 
         <div className="modal-body">
@@ -46,15 +66,21 @@ export default function InspectModal({ record, onClose, onToast }) {
             <span><strong>Status:</strong> {record.status.toUpperCase()}</span>
             <span><strong>Checked:</strong> {record.checkedAt}</span>
             <span><strong>Price:</strong> {record.price}</span>
-            <button className="btn-copy-json" onClick={copyJson} title="Copy raw JSON payload">
+            <motion.button 
+              className="btn-copy-json" 
+              onClick={copyJson} 
+              title="Copy raw JSON payload"
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.97 }}
+            >
               {hasCopied ? <Check size={12} className="text-emerald" /> : <Copy size={12} />}
               <span>{hasCopied ? 'Copied' : 'Copy JSON'}</span>
-            </button>
+            </motion.button>
           </div>
 
           <pre className="modal-raw-json">{jsonContent}</pre>
         </div>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 }

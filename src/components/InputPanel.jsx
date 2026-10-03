@@ -1,4 +1,5 @@
 import React, { useRef, useState, useMemo } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Play, 
   Pause, 
@@ -235,23 +236,33 @@ export default function InputPanel({
 
         {/* Selected TLDs Summary Chips */}
         <div className="active-tld-pills">
-          {selectedTlds.map(tld => {
-            const price = TLD_PRICING[tld]?.reg || '';
-            return (
-              <span key={tld} className="active-tld-pill">
-                <span className="pill-name">{tld}</span>
-                {price && <span className="pill-price">{price}</span>}
-                <button
-                  type="button"
-                  className="pill-remove-btn"
-                  onClick={() => toggleTld(tld)}
-                  title={`Remove ${tld}`}
+          <AnimatePresence>
+            {selectedTlds.map(tld => {
+              const price = TLD_PRICING[tld]?.reg || '';
+              return (
+                <motion.span 
+                  key={tld} 
+                  className="active-tld-pill"
+                  initial={{ opacity: 0, scale: 0.8, y: -4 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.8, y: -4 }}
+                  transition={{ type: "spring", stiffness: 450, damping: 28 }}
+                  layout
                 >
-                  <X size={10} />
-                </button>
-              </span>
-            );
-          })}
+                  <span className="pill-name">{tld}</span>
+                  {price && <span className="pill-price">{price}</span>}
+                  <button
+                    type="button"
+                    className="pill-remove-btn"
+                    onClick={() => toggleTld(tld)}
+                    title={`Remove ${tld}`}
+                  >
+                    <X size={10} />
+                  </button>
+                </motion.span>
+              );
+            })}
+          </AnimatePresence>
         </div>
 
         {/* Search & Custom Input Bar */}
@@ -278,14 +289,18 @@ export default function InputPanel({
 
           {/* Quick-add button if candidate is typed */}
           {candidateTld && isValidCandidate && (
-            <button 
+            <motion.button 
               type="submit" 
               className="tld-add-btn"
               title={`Add ${candidateTld} to extensions`}
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.97 }}
             >
               <Plus size={11} strokeWidth={2.5} />
               <span>Add {candidateTld}</span>
-            </button>
+            </motion.button>
           )}
         </form>
 
@@ -296,24 +311,28 @@ export default function InputPanel({
               ? combinedCatalog.length 
               : combinedCatalog.filter(i => i.category.toLowerCase() === cat.toLowerCase()).length;
             return (
-              <button
+              <motion.button
                 key={cat}
                 type="button"
                 className={`cat-pill ${selectedCategory === cat ? 'active' : ''}`}
                 onClick={() => setSelectedCategory(cat)}
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.96 }}
               >
                 {cat} <span className="cat-count">{count}</span>
-              </button>
+              </motion.button>
             );
           })}
           {customTlds.length > 0 && (
-            <button
+            <motion.button
               type="button"
               className={`cat-pill ${selectedCategory === 'Custom' ? 'active' : ''}`}
               onClick={() => setSelectedCategory('Custom')}
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.96 }}
             >
               Custom <span className="cat-count">{customTlds.length}</span>
-            </button>
+            </motion.button>
           )}
         </div>
 
@@ -323,11 +342,14 @@ export default function InputPanel({
             const isSelected = selectedTlds.includes(item.tld);
             const isCustom = item.category === 'Custom';
             return (
-              <div
+              <motion.div
                 key={item.tld}
                 className={`catalog-tld-card ${isSelected ? 'selected' : ''}`}
                 onClick={() => toggleTld(item.tld)}
                 title={`${item.tld} — ${item.category} (${item.termNote})`}
+                whileHover={{ y: -2, transition: { duration: 0.12 } }}
+                whileTap={{ scale: 0.97 }}
+                layout
               >
                 <div className="card-top-row">
                   <span className="card-tld-name">{item.tld}</span>
@@ -352,20 +374,22 @@ export default function InputPanel({
                   <span className="card-price">{item.reg}</span>
                   <span className="card-cat-tag">{item.category}</span>
                 </div>
-              </div>
+              </motion.div>
             );
           })}
           {filteredCatalog.length === 0 && (
             <div className="empty-catalog-message">
               <span>No extensions matching "{searchQuery}"</span>
               {candidateTld && isValidCandidate && (
-                <button
+                <motion.button
                   type="button"
                   className="empty-add-btn"
                   onClick={handleAddCustomTld}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.97 }}
                 >
                   <Plus size={12} /> Add "{candidateTld}"
-                </button>
+                </motion.button>
               )}
             </div>
           )}
@@ -390,34 +414,40 @@ export default function InputPanel({
 
       {/* Primary Action Button */}
       {!isRunning ? (
-        <button 
+        <motion.button 
           type="button" 
           className="primary-btn" 
           onClick={onStart}
           disabled={cleanLines.length === 0}
+          whileHover={cleanLines.length > 0 ? { scale: 1.01 } : {}}
+          whileTap={cleanLines.length > 0 ? { scale: 0.98 } : {}}
         >
           <Play size={13} fill="currentColor" />
           <span>Check Domains</span>
           <span className="btn-key-hint">⌘↵</span>
-        </button>
+        </motion.button>
       ) : (
         <div className="btn-group-running">
-          <button 
+          <motion.button 
             type="button" 
             className="btn-secondary flex-1" 
             onClick={onPause}
+            whileHover={{ scale: 1.01 }}
+            whileTap={{ scale: 0.98 }}
           >
             {isPaused ? <Play size={13} /> : <Pause size={13} />}
             <span>{isPaused ? 'Resume' : 'Pause'}</span>
-          </button>
-          <button 
+          </motion.button>
+          <motion.button 
             type="button" 
             className="btn-stop" 
             onClick={onStop}
+            whileHover={{ scale: 1.01 }}
+            whileTap={{ scale: 0.98 }}
           >
             <Square size={13} fill="currentColor" />
             <span>Stop</span>
-          </button>
+          </motion.button>
         </div>
       )}
     </div>

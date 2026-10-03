@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import confetti from 'canvas-confetti';
 import Header from './components/Header';
 import InputPanel from './components/InputPanel';
@@ -266,25 +267,36 @@ export default function App() {
       {/* Main 2-Column Responsive Workbench */}
       <div className="main-grid">
         {/* Left Column: Config Panel */}
-        <InputPanel
-          inputText={inputText}
-          setInputText={setInputText}
-          selectedTlds={selectedTlds}
-          setSelectedTlds={setSelectedTlds}
-          customTlds={customTlds}
-          setCustomTlds={setCustomTlds}
-          concurrency={concurrency}
-          setConcurrency={setConcurrency}
-          isRunning={isRunning}
-          isPaused={isPaused}
-          onStart={startEngine}
-          onPause={pauseEngine}
-          onStop={stopEngine}
-          onToast={showToast}
-        />
+        <motion.div
+          initial={{ opacity: 0, x: -12 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.35, ease: "easeOut" }}
+        >
+          <InputPanel
+            inputText={inputText}
+            setInputText={setInputText}
+            selectedTlds={selectedTlds}
+            setSelectedTlds={setSelectedTlds}
+            customTlds={customTlds}
+            setCustomTlds={setCustomTlds}
+            concurrency={concurrency}
+            setConcurrency={setConcurrency}
+            isRunning={isRunning}
+            isPaused={isPaused}
+            onStart={startEngine}
+            onPause={pauseEngine}
+            onStop={stopEngine}
+            onToast={showToast}
+          />
+        </motion.div>
 
         {/* Right Column: Stats & Data Table */}
-        <div className="results-column">
+        <motion.div 
+          className="results-column"
+          initial={{ opacity: 0, x: 12 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.35, ease: "easeOut", delay: 0.05 }}
+        >
           <MetricsBar
             stats={stats}
             activeFilter={activeFilter}
@@ -304,17 +316,19 @@ export default function App() {
             onInspect={(record) => setInspectingRecord(record)}
             onToast={showToast}
           />
-        </div>
+        </motion.div>
       </div>
 
       {/* RDAP Inspector Modal */}
-      {inspectingRecord && (
-        <InspectModal
-          record={inspectingRecord}
-          onClose={() => setInspectingRecord(null)}
-          onToast={showToast}
-        />
-      )}
+      <AnimatePresence>
+        {inspectingRecord && (
+          <InspectModal
+            record={inspectingRecord}
+            onClose={() => setInspectingRecord(null)}
+            onToast={showToast}
+          />
+        )}
+      </AnimatePresence>
 
       {/* Toast Notifications */}
       <Toast toasts={toasts} />

@@ -1,13 +1,24 @@
 import React from 'react';
+import { motion } from 'framer-motion';
 import { Globe, Copy, CheckCircle2 } from 'lucide-react';
 
 export default function Header({ availableCount, onCopyAvailable, hasCopied }) {
   return (
-    <header className="app-header">
+    <motion.header 
+      className="app-header"
+      initial={{ opacity: 0, y: -10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.35, ease: "easeOut" }}
+    >
       <div className="brand">
-        <div className="logo-badge" title="DomainScope Engine">
+        <motion.div 
+          className="logo-badge" 
+          title="DomainScope Engine"
+          whileHover={{ rotate: 12, scale: 1.05 }}
+          transition={{ type: "spring", stiffness: 300 }}
+        >
           <Globe size={18} strokeWidth={2.2} />
-        </div>
+        </motion.div>
         <div className="brand-content">
           <h1>DomainScope</h1>
         </div>
@@ -19,11 +30,13 @@ export default function Header({ availableCount, onCopyAvailable, hasCopied }) {
           <span>RDAP Active</span>
         </div>
 
-        <button 
+        <motion.button 
           onClick={onCopyAvailable} 
           className="btn-secondary" 
           disabled={availableCount === 0}
           title={availableCount > 0 ? `Copy ${availableCount} available domains` : "No available domains"}
+          whileHover={availableCount > 0 ? { scale: 1.02 } : {}}
+          whileTap={availableCount > 0 ? { scale: 0.97 } : {}}
         >
           {hasCopied ? (
             <>
@@ -36,8 +49,8 @@ export default function Header({ availableCount, onCopyAvailable, hasCopied }) {
               <span>Copy Available ({availableCount})</span>
             </>
           )}
-        </button>
+        </motion.button>
       </div>
-    </header>
+    </motion.header>
   );
 }
